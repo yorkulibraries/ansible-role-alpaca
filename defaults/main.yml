@@ -13,9 +13,7 @@ alpaca_features:
   - fcrepo-service-activemq
   - fcrepo-camel
   - fcrepo-service-camel
-  - fcrepo-indexing-triplestore
   - islandora-http-client
-  - islandora-indexing-triplestore
   - islandora-indexing-fcrepo
   - islandora-connector-derivative
 
@@ -25,10 +23,7 @@ alpaca_karaf_deploy_dir: "{{ alpaca_karaf_dir }}/deploy"
 alpaca_karaf_user: karaf
 alpaca_local_mvn_path: /opt/maven/repo
 
-triplestore_namespace: islandora
-alpaca_triplestore_base_url: http://localhost:8080/bigdata
 alpaca_milliner_base_url: http://localhost:8000/milliner
-alpaca_gemini_base_url: http://localhost:8000/gemini
 alpaca_houdini_base_url: http://localhost:8000/houdini
 alpaca_homarus_base_url: http://localhost:8000/homarus
 alpaca_fits_base_url: http://localhost:8000/crayfits
@@ -37,27 +32,14 @@ alpaca_settings:
   - pid: ca.islandora.alpaca.http.client
     settings:
       token.value: islandora
-  - pid: org.fcrepo.camel.indexing.triplestore
-    settings:
-      input.stream: broker:topic:fedora
-      triplestore.reindex.stream: broker:queue:triplestore.reindex
-      triplestore.baseUrl: "{{ alpaca_triplestore_base_url }}/namespace/{{ triplestore_namespace }}/sparql"
-  - pid: ca.islandora.alpaca.indexing.triplestore
-    settings:
-      error.maxRedeliveries: 10
-      index.stream: broker:queue:islandora-indexing-triplestore-index
-      delete.stream: broker:queue:islandora-indexing-triplestore-delete
-      triplestore.baseUrl: "{{ alpaca_triplestore_base_url }}/namespace/{{ triplestore_namespace }}/sparql"
   - pid: ca.islandora.alpaca.indexing.fcrepo
     settings:
       error.maxRedeliveries: 5
       node.stream: broker:queue:islandora-indexing-fcrepo-content
       node.delete.stream: broker:queue:islandora-indexing-fcrepo-delete
       media.stream: broker:queue:islandora-indexing-fcrepo-media
-      file.stream: broker:queue:islandora-indexing-fcrepo-file
       file.delete.stream: broker:queue:islandora-indexing-fcrepo-file-delete
       milliner.baseUrl: "{{ alpaca_milliner_base_url }}"
-      gemini.baseUrl: "{{ alpaca_gemini_base_url }}"
 
 alpaca_blueprint_settings:
   - pid: ca.islandora.alpaca.connector.ocr
