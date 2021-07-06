@@ -17,7 +17,7 @@
 
 - name: Clone CLAW Alpaca
   git:
-    repo: https://github.com/yorkulibraries/Alpaca.git
+    repo: https://github.com/islandora/Alpaca.git
     dest: "{{ alpaca_clone_directory }}"
     version: "{{ alpaca_version }}"
   register: alpaca_git
@@ -39,7 +39,7 @@
 - name: Add local maven repository to karaf
   lineinfile:
     state: present
-    path: "{{alpaca_karaf_dir}}/etc/org.ops4j.pax.url.mvn.cfg"
+    path: "{{ alpaca_karaf_dir }}/etc/org.ops4j.pax.url.mvn.cfg"
     insertafter: ^#org\.ops4j\.pax\.url\.mvn\.localRepository=$
     line: org.ops4j.pax.url.mvn.localRepository={{ alpaca_local_mvn_path }}
     regexp: ^org\.ops4j\.pax\.url\.mvn\.localRepository=
